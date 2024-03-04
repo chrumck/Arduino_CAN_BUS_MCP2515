@@ -443,7 +443,7 @@ byte MCP_CAN::mcp2515_init(const byte canSpeed)
             MCP_RXB_RX_STDEXT);
 #endif
         // enter mode
-        res = mcp2515_setCANCTRL_Mode(this->opMode);
+        res = mcp2515_setCANCTRL_Mode(opMode);
         if (res)
         {
 #if DEBUG_EN
