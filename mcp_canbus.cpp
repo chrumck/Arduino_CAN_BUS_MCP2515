@@ -201,18 +201,17 @@ byte MCP_CAN::mcp2515_readStatus(void)
 ** Function name:           mcp2515_setCANCTRL_Mode
 ** Descriptions:            set control mode
 *********************************************************************************************************/
-byte MCP_CAN::mcp2515_setCANCTRL_Mode(const byte newmode)
+byte MCP_CAN::mcp2515_setCANCTRL_Mode(const byte mode)
 {
-    byte i;
 
-    mcp2515_modifyRegister(MCP_CANCTRL, MODE_MASK, newmode);
+    mcp2515_modifyRegister(MCP_CANCTRL, MODE_MASK, mode);
 
-    i = mcp2515_readRegister(MCP_CANCTRL);
-    i &= MODE_MASK;
+    u32 endTime = millis() + 10;
+    while (millis() < endTime) {
+        byte newMode = mcp2515_readRegister(MCP_CANCTRL);
+        newMode &= MODE_MASK;
 
-    if (i == newmode)
-    {
-        return MCP2515_OK;
+        if (newMode == mode) { return MCP2515_OK; }
     }
 
     return MCP2515_FAIL;
